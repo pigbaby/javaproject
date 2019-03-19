@@ -83,16 +83,21 @@ public class MenuItem implements Serializable {
         return null;
     }
 
-    // 在指定位置插入一个菜单项
+    // 在指定位置插入一个菜单项，这个指定位置是指父节点的位置。该方法白话说明：在“新闻中心”（parentId）
     public boolean insertMenuItem(MenuItem menuItem, String parentId) {
         if (null == parentId || "" == parentId) {
             return false;
         } else {
+            // 根据parentID
             MenuItem parentMenu = this.findMenuItem(parentId);
             if (null != parentMenu) {
                 parentMenu.getSubMenus().add(menuItem);
+                return true;
+            } else {
+                // 根据parentId没有找到匹配的菜单结点
+                System.out.println("没有找到相应的子菜单");
+                return false;
             }
-            return true;
         }
     }
 
