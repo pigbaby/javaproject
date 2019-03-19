@@ -46,14 +46,14 @@ public class FirstServlet extends HttpServlet {
         String id = req.getParameter("newsId"); 
 
         // sourceFile.getHtml("http://www.china-cdt.com:80//indexAction.ndo?action=showindex");
-        System.out.println("Visit URL is : " + siteUrl + id + ".html"); 
+        // System.out.println("Visit URL is : " + siteUrl + id + ".html");
         // String html = sourceFile.getHtml(siteUrl + id + ".html");
         String html = sourceFile.getHtml(
                 "http://www.china-cdt.com/dtwz/indexAction.ndo?action=showDoc&d=93F333FF-DE5F-DFA4-8191-2A31551F01EA&t=index_news&frontDateStr=2019");
         // System.out.println(html);
         System.out.println(ResourceUtils.getURL("classpath:").getPath()); 
         System.out.println("this servlet is from : " + req.getServletPath()); 
-        File file = new File(ResourceUtils.getURL("classpath:").getPath() + "test.html"); 
+        File file = new File(ResourceUtils.getURL("classpath:").getPath() + "/test.html"); 
         try {
             FileWriter writer = new FileWriter(file); 
             writer.write(html); 
