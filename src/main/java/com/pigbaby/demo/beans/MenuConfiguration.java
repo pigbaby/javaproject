@@ -3,12 +3,9 @@ package com.pigbaby.demo.beans;
 import java.io.Serializable;
 import java.util.Hashtable;
 
-import org.springframework.stereotype.Component;
-
 /**
  * MenuConfiguration 这是一个用于网站前台的类，主要有两个个Hashtable组成。 该类控制了前台网站菜单的内容。
  */
-@Component("mainmenu")
 public class MenuConfiguration implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -21,7 +18,7 @@ public class MenuConfiguration implements Serializable {
     public MenuConfiguration() {
         // this.setMainConfiguration(new Hashtable < String, MenuItem > ());
         // this.getMainConfiguration().put("test", new MenuItem());
-        System.out.println("main menu configuration is ready");
+        // System.out.println("main menu configuration is ready");
     }
 
     /**

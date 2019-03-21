@@ -10,12 +10,15 @@ import java.io.ObjectOutputStream;
 import java.util.Hashtable;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 
+import com.pigbaby.demo.beans.AppMenuConfig;
 import com.pigbaby.demo.beans.MenuConfigBean;
-import com.pigbaby.demo.beans.MenuConfiguration;
 import com.pigbaby.demo.beans.MenuItem;
+import com.pigbaby.demo.beans.testbean;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 
@@ -27,13 +30,30 @@ public class InitializeMenuImpl implements InitializeMenu {
     // 从系统配置文件applicatioin.properties
     @Autowired(required = false)
     private MenuConfigBean configBean;
-
     // 获取系统初始化的菜单项
     @Autowired(required = false)
-    private MenuConfiguration menuConfig;
+    private AppMenuConfig appMenuConfig;
+
+    // // 获取系统初始化的菜单项
+    // @Autowired(required = false)
+    // private MenuConfiguration menuConfig;
 
     public InitializeMenuImpl() {
 
+    }
+
+    /**
+     * @return the appMenuConfig
+     */
+    public AppMenuConfig getAppMenuConfig() {
+        return appMenuConfig;
+    }
+
+    /**
+     * @param appMenuConfig the appMenuConfig to set
+     */
+    public void setAppMenuConfig(AppMenuConfig appMenuConfig) {
+        this.appMenuConfig = appMenuConfig;
     }
 
     @Override
@@ -53,14 +73,21 @@ public class InitializeMenuImpl implements InitializeMenu {
         try {
             File backFile = ResourceUtils.getFile("classpath:" + configBean.getMainMenuBackPath());
 
-            if (backFile.exists()) {
+            if (!backFile.exists()) {
                 // System.out.println("the configuration path is: " + backFile.getPath());
                 // this.backMenuConfig(backFile);
                 // 如果备份文档村则直接从备份的java对象中获取到树状结构的配置，并且复制到ManuConfiguration对象中
                 restoreMenuConfig(backFile);
-                System.out.println("The manuconfiguration is binded: " + menuConfig.getMainConfiguration().get("test"));
+                // System.out.println("The manuconfiguration is binded: " +
+                // menuConfig.getMainConfiguration().get("test"));
             } else {
-                System.out.println("Can not find the file");
+                // 如果文件不存在，则需要从后台系统中获取。
+                String serverMenu = SourceFile.getHtml(
+                        "http://192.168.105.108:8080/front_server/newsProgram/listexForNewsProgramListAction!listex.action");
+                // 将该字符串插入进菜单配置的Hashmap中。
+                appMenuConfig.getMainMenuConfig().put("main", serverMenu);
+                // System.out.println(appMenuConfig.getMainMenuConfig().get("main"));
+                // System.out.println("New main menu is ready");
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -85,7 +112,7 @@ public class InitializeMenuImpl implements InitializeMenu {
                 // System.out.println("Is writing");
 
                 System.out.println(file.getParent());
-                objOS.writeObject(menuConfig.getMainConfiguration());
+                objOS.writeObject(appMenuConfig.getMainMenuConfig());
                 // System.out.println("Done!!!!!!!");
                 objOS.close();
                 fileOS.close();
@@ -112,8 +139,8 @@ public class InitializeMenuImpl implements InitializeMenu {
             try {
                 fileIS = new FileInputStream(file);
                 objIS = new ObjectInputStream(fileIS);
-                Hashtable<String, MenuItem> backTable = (Hashtable<String, MenuItem>) objIS.readObject();
-                this.menuConfig.setMainConfiguration(backTable);
+                Hashtable<String, String> backTable = (Hashtable<String, String>) objIS.readObject();
+                this.appMenuConfig.setMainMenuConfig(backTable);
                 // System.out.println("Done!!!!!!!");
                 objIS.close();
                 fileIS.close();
@@ -148,20 +175,6 @@ public class InitializeMenuImpl implements InitializeMenu {
      */
     public void setConfigBean(MenuConfigBean configBean) {
         this.configBean = configBean;
-    }
-
-    /**
-     * @return the menuConfig
-     */
-    public MenuConfiguration getMenuConfig() {
-        return menuConfig;
-    }
-
-    /**
-     * @param menuConfig the menuConfig to set
-     */
-    public void setMenuConfig(MenuConfiguration menuConfig) {
-        this.menuConfig = menuConfig;
     }
 
 }
