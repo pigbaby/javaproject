@@ -1,5 +1,12 @@
-{"properties": [{
-  "name": "main.menu.path",
-  "type": "java.lang.String",
-  "description": "A description for 'main.menu.path'"
-}]}
+{"properties": [
+  {
+    "name": "main.menu.path",
+    "type": "java.lang.String",
+    "description": "A description for 'main.menu.path'"
+  },
+  {
+    "name": "main.news.path",
+    "type": "java.lang.String",
+    "description": "A description for 'main.news.path'"
+  }
+]}

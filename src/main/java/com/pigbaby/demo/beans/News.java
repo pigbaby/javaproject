@@ -12,12 +12,27 @@ public class News {
     private String newsType;
     private String newsTitle;
     private Date publishDate;
+    private Date topDate;
 
     public News() {
         this.setNewsId("test1");
         this.setNewsUrl("http://www.baidu.com");
         this.setNewsType("news");
         this.setNewsTitle("test1");
+    }
+
+    /**
+     * @return the topDate
+     */
+    public Date getTopDate() {
+        return topDate;
+    }
+
+    /**
+     * @param topDate the topDate to set
+     */
+    public void setTopDate(Date topDate) {
+        this.topDate = topDate;
     }
 
     /**

@@ -4,53 +4,61 @@
  * 2. 前台系统负责获取到后台系统传过来的菜单的Json字符串。
  * 3. 菜单Json字符串是一个自嵌套的结构。可以让前台页面直接使用。
  */
-package com.pigbaby.demo.beans; 
+package com.pigbaby.demo.beans;
 
-import java.io.Serializable; 
-import java.util.Hashtable; 
+import java.io.Serializable;
+import java.util.Hashtable;
 
-import org.springframework.stereotype.Component; 
+import javax.annotation.PreDestroy;
+
+import org.springframework.stereotype.Component;
 
 /**
  * AppMenuConfig
  */
 @Component("appmenuconfig")
 public class AppMenuConfig implements Serializable {
-    private static final long serialVersionUID = 1L; 
+    private static final long serialVersionUID = 1L;
 
-    private Hashtable < String, String > mainMenuConfig; 
-    private Hashtable < String, String > backMenuConfig; 
+    private Hashtable<String, String> mainMenuConfig;
+    private Hashtable<String, String> backMenuConfig;
 
     public AppMenuConfig() {
-        mainMenuConfig = new Hashtable < String, String > (); 
+        mainMenuConfig = new Hashtable<String, String>();
+        System.out.println("The menu bean is created and the ID is :" + this.hashCode());
+    }
+
+    @PreDestroy
+    public void clean() {
+        System.out.println("The menu is closing");
     }
 
     /**
      * @return the mainMenuConfig
      */
-    public Hashtable < String, String > getMainMenuConfig() {
-        return mainMenuConfig; 
+    public Hashtable<String, String> getMainMenuConfig() {
+        return mainMenuConfig;
     }
 
     /**
      * @return the backMenuConfig
      */
-    public Hashtable < String, String > getBackMenuConfig() {
-        return backMenuConfig; 
+    public Hashtable<String, String> getBackMenuConfig() {
+        return backMenuConfig;
     }
 
     /**
      * @param backMenuConfig the backMenuConfig to set
      */
-    public void setBackMenuConfig(Hashtable < String, String > backMenuConfig) {
-        this.backMenuConfig = backMenuConfig; 
+    public void setBackMenuConfig(Hashtable<String, String> backMenuConfig) {
+        this.backMenuConfig = backMenuConfig;
     }
 
     /**
      * @param mainMenuConfig the mainMenuConfig to set
      */
-    public void setMainMenuConfig(Hashtable < String, String > mainMenuConfig) {
-        this.mainMenuConfig = mainMenuConfig; 
+    public void setMainMenuConfig(Hashtable<String, String> mainMenuConfig) {
+        this.mainMenuConfig = mainMenuConfig;
     }
 
 }

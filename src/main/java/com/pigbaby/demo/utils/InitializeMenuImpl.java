@@ -10,19 +10,19 @@ import java.io.ObjectOutputStream;
 import java.util.Hashtable;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 
 import com.pigbaby.demo.beans.AppMenuConfig;
 import com.pigbaby.demo.beans.MenuConfigBean;
 import com.pigbaby.demo.beans.MenuItem;
-import com.pigbaby.demo.beans.testbean;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 
 /**
+ * 该类在系统初始化的时候就启动，主要对网站的新闻栏目进行初始化：
+ * 1.检查是否在指定目录中是否已经有了菜单的备份，如果有，则在启动的时候导入到菜单管理对象中。
+ * 2.如果没有菜单对象的备份，则从后台控制服务器中获取到菜单数据，并且保存到AppMenuConfig.java对象中。
  * InitializeMenuImpl
  */
 @Service
@@ -128,6 +128,7 @@ public class InitializeMenuImpl implements InitializeMenu {
 
     @Override
     @SuppressWarnings("unchecked")
+    // 总指定的java对象文档中，反序列化出菜单对象。
     public boolean restoreMenuConfig(File file) {
         if (!file.exists()) {
             // 判断文件路径是否存在，如果不存在则返回错误。
